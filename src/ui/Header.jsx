@@ -1,6 +1,12 @@
+import HeaderItem from "./HeaderItem";
+
 function Header() {
-  //CONTAINER FOR THE COMPONENTS
-  return <div></div>;
+  return (
+    <div className="header-container">
+      <HeaderItem name="100$ 💵" />
+      <HeaderItem name="Ivan 🙍‍♂️" />
+    </div>
+  );
 }
 
 export default Header;

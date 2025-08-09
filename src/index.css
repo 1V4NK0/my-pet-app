@@ -1,1 +1,98 @@
-@import "tailwindcss";
+/* Header styles */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  background-color: #60a5fa; /* Tailwind blue-400 */
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 1rem; /* p-4 */
+
+  width: 90%;
+  max-width: 320px;
+}
+
+.header-item {
+  background-color: white;
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  color: #1f2937; /* Tailwind gray-800 */
+  font-weight: 500; /* font-medium */
+  font-family: system-ui, sans-serif;
+
+  /* Dynamic font size: min 14px, scales with viewport, max 22px */
+  font-size: clamp(14px, 2vw, 22px);
+}
+
+/* Medium screens and up */
+@media (min-width: 640px) {
+  .header-container {
+    max-width: 480px;
+  }
+}
+
+/* Large screens and up */
+@media (min-width: 1024px) {
+  .header-container {
+    max-width: 720px;
+  }
+}
+
+/* Pet container styles */
+.pet-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  max-width: 200px;
+  margin: 1rem auto;
+  background-color: #e0f7fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: max-width 0.3s ease;
+}
+
+/* Name tag styling */
+.pet-name {
+  font-weight: 600;
+  color: #00796b;
+  margin-bottom: 0.5rem;
+
+  /* Responsive font size */
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Pet sprite styling */
+.pet-sprite {
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
+
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+/* Responsive pet container & sprite */
+@media (min-width: 600px) {
+  .pet-container {
+    max-width: 250px;
+  }
+
+  .pet-sprite {
+    width: 96px;
+    height: 96px;
+    background-size: 320px 32px; /* scale entire sprite sheet proportionally */
+  }
+}
+
+@media (min-width: 900px) {
+  .pet-container {
+    max-width: 300px;
+  }
+
+  .pet-sprite {
+    width: 128px;
+    height: 128px;
+    /* background-size: 400px 42px; adjust accordingly */
+  }
+}

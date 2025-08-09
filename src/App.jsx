@@ -1,9 +1,11 @@
-import "./App.css";
-
+import "./index.css";
+import Body from "./ui/Body";
+import Header from "./ui/Header";
 function App() {
   return (
     <>
-      <div>hello ivan kozak </div>
+      <Header />
+      <Body />
     </>
   );
 }
