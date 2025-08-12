@@ -1,11 +1,11 @@
 import ActionsContainer from "./ActionsContainer";
-function Footer() {
+function Footer({ onPlay }) {
   // KINDA USELESS AS IT'S JUST A WRAPPER TO MAKE IT SORT OF ORGANISED AND CLEAN:
   // HEADER -> BODY -> FOOTER
   // WILL JUST HAVE AN ACTIONS CONTAINER
   return (
     <div className="footer-container">
-      <ActionsContainer />
+      <ActionsContainer onPlay={onPlay} />
     </div>
   );
 }
