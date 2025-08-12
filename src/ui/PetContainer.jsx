@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
 import { usePet } from "../hooks/usePet";
-import { HiH3 } from "react-icons/hi2";
+
 import { useChangeName } from "../hooks/useChangeName";
+import BasicSelect from "./Select";
 
 function Pet({ frameIndex, frameCount = 10 }) {
   const style = {
@@ -63,6 +64,9 @@ function PetContainer() {
 
   return (
     <div className="pet-container">
+      <div className="pet-select">
+        <BasicSelect />
+      </div>
       <NameTag name={name} />
       <Pet frameIndex={frameIndex} frameCount={frameCount} />
       <Stats hunger={hunger} energy={energy} health={health} />
