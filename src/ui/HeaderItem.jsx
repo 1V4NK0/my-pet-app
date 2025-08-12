@@ -1,9 +1,9 @@
-function HeaderItem({ name }) {
+function HeaderItem({ children, func }) {
   //IN FUTURE MAY ACCEPT ICON AND CALLBACK FUNC
   return (
-    <div className="header-item">
-      {name}
-    </div>
+    <button className="header-item" onClick={() => func()}>
+      {children}
+    </button>
   );
 }
 

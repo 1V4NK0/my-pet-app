@@ -1,12 +1,15 @@
-/* Header styles */
+* {
+  font-family: system-ui, sans-serif;
+}
+
 .header-container {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
   background-color: #60a5fa; /* Tailwind blue-400 */
   border-radius: 1rem; /* rounded-2xl */
-  padding: 1rem; /* p-4 */
-  width: 40%;
+  padding: 1.5rem;
+  width: 100%;
   max-width: 320px;
 }
 
@@ -20,20 +23,13 @@
   font-family: system-ui, sans-serif;
   /* Dynamic font size: min 14px, scales with viewport, max 22px */
   font-size: clamp(14px, 2vw, 22px);
+  cursor: pointer;
+  border: none;
 }
 
-/* Medium screens and up */
-@media (min-width: 640px) {
-  .header-container {
-    max-width: 40%;
-  }
-}
-
-/* Large screens and up */
-@media (min-width: 1024px) {
-  .header-container {
-    max-width: 40%;
-  }
+.header-item:hover {
+  background-color: #e5e5e5;
+  transition: 0.2s;
 }
 
 /* Pet container styles */
@@ -41,9 +37,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
   width: 100%;
-  max-width: 300px; /* Set a reasonable max width */
+  max-width: 320px;
+  padding: 1.5rem; /* Match header container */
   min-height: 20vh;
   margin: 1rem auto;
   background-color: #e0f7fa;
@@ -61,6 +57,8 @@
   /* Responsive font size */
   font-size: clamp(1rem, 3vw, 1.5rem);
   text-align: center;
+  border: none;
+  background-color: transparent;
 }
 
 /* Pet sprite styling - Using CSS custom properties for responsive scaling */
@@ -68,32 +66,204 @@
   --sprite-size: 128px; /* 2x bigger: was 64px */
   width: var(--sprite-size);
   height: var(--sprite-size);
-  /* Ensure perfect centering */
-  margin: 0 auto;
-  display: block;
-  /* Prevent sub-pixel rendering issues */
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  margin-left: 75px;
 }
 
-/* Responsive pet container & sprite */
-@media (min-width: 600px) {
-  .pet-container {
-    max-width: 500px; /* Increase container size to accommodate larger sprite */
+/* App container */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+/* Footer container */
+.footer-container {
+  margin: 1rem auto 0;
+  width: 100%;
+  max-width: 320px; /* Match other containers */
+}
+
+/* Actions container - default flex row layout */
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem; /* Match header and pet container */
+  background-color: #e0f7fa; /* Same as pet container */
+  border-radius: 12px; /* Same as pet container */
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  width: 100%;
+  max-width: 320px; /* Match other containers */
+  margin-left: -25px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* Action buttons - default styling for row layout */
+.action-button {
+  background-color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #00796b; /* Teal color to match pet name */
+  font-weight: 600;
+  font-size: clamp(12px, 2.5vw, 16px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: capitalize;
+  flex: 1; /* Equal width buttons */
+}
+
+/* Button hover and active states */
+.action-button:hover {
+  background-color: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.action-button:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-button:focus {
+  outline: none;
+  ring: 2px solid #60a5fa;
+  ring-offset: 2px;
+}
+
+/* Mobile-first media query for small screens */
+@media (max-width: 599px) {
+  .actions-container {
+    flex-direction: column;
+    align-items: center;
   }
-  
+
+  .action-button {
+    width: 100%;
+    min-height: 48px;
+    font-size: clamp(14px, 3vw, 18px);
+    padding: 0.875rem 1.5rem;
+    text-align: center;
+  }
+}
+
+/* UNIFIED RESPONSIVE DESIGN - All elements scale together */
+@media (min-width: 600px) {
+  .header-container {
+    max-width: 400px;
+  }
+
+  .pet-container {
+    max-width: 400px;
+  }
+
+  .footer-container {
+    max-width: 400px;
+  }
+
+  .actions-container {
+    max-width: 400px;
+    gap: 1rem;
+  }
+
+  .action-button {
+    font-size: clamp(14px, 2vw, 18px);
+    padding: 1rem 1.5rem;
+  }
+
   .pet-sprite {
     --sprite-size: 192px; /* 2x bigger: was 96px */
+    margin-left: 55px;
   }
 }
 
 @media (min-width: 900px) {
-  .pet-container {
-    max-width: 600px; /* Increase container size to accommodate larger sprite */
+  .header-container {
+    max-width: 500px;
   }
-  
+
+  .pet-container {
+    max-width: 500px;
+  }
+
+  .footer-container {
+    max-width: 500px;
+  }
+
+  .actions-container {
+    max-width: 500px;
+    gap: 1.25rem;
+  }
+
+  .action-button {
+    font-size: clamp(16px, 2vw, 20px);
+    padding: 1.25rem 2rem;
+  }
+
   .pet-sprite {
     --sprite-size: 256px; /* 2x bigger: was 128px */
   }
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 1rem;
+  margin-top: 30px;
+  border-radius: 12px;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: #1f2937;
+}
+
+.stats-container li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: white;
+  border-radius: 8px;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+  transition: transform 0.2s ease;
+}
+
+@media (max-width: 600px) {
+  .pet-sprite {
+    margin-left: 65px;
+    --sprite-size: 192px; /* 2x bigger: was 96px */
+  }
+}
+
+@media (max-width: 400px) {
+  .header-container,
+  .pet-container,
+  .footer-container,
+  .actions-container {
+    max-width: 100% !important; /* Let them take full width */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box; /* Prevent overflow from padding */
+  }
+
+  /* Remove negative margin on actions container */
+  .actions-container {
+    margin-left: 0 !important;
+  }
+
+ 
 }
