@@ -1,9 +1,16 @@
 import GameArea from "./GameArea";
-
-function GameLayout() {
+import Header from "../ui/Header";
+import HeaderItem from "../ui/HeaderItem";
+function GameLayout({ onExit }) {
   return (
     <div>
-      <GameArea />
+      <Header>
+        <HeaderItem func={onExit}>←</HeaderItem>
+        <HeaderItem func={() => {}}>Points: 25</HeaderItem>
+
+        <HeaderItem func={() => {}}>❤️ ❤️ ❤️</HeaderItem>
+      </Header>
+      <GameArea onExit={onExit} />
     </div>
   );
 }

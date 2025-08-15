@@ -3,7 +3,7 @@ import Pet from "./Pet";
 import { useEffect, useRef, useState } from "react";
 
 /* eslint-disable no-unused-vars */
-function GameArea() {
+function GameArea({ onExit }) {
   // CHANGE LATER TO THE GAME CONTAINER WIDTH
   const [items, setItems] = useState([]);
   let visibleScreenWidth = window.innerWidth - 100;
@@ -16,8 +16,13 @@ function GameArea() {
   const food = ["🍔", "🥗", "🍟", "🍕", "🍿", "🍪", "🍫", "🍉", "🍑", "🍇"];
   const trash = ["🐸", "⚡️", "💩", "🧠", "👑", "🍄", "🥊", "⚽️", "🚗", "🎸"];
 
-  const [petX, setPetX] = useState(180);
-
+  //   const [petX, setPetX] = useState(180);
+  const [petCoordinates, setPetCoordinates] = useState({
+    x: 180,
+    y: 20,
+    width: petWidth,
+    height: 30,
+  });
   useEffect(() => {
     const interval = setInterval(() => {
       const isEdible = Math.random() < 0.5;
@@ -28,6 +33,8 @@ function GameArea() {
         emoji: isEdible ? food[randomIndex] : trash[randomIndex],
         x: Math.random() * (gameAreaRef.current.offsetWidth - petWidth - 15),
         y: 30,
+        width: 25,
+        height: 25,
       };
 
       setItems((prev) => [...prev, item]);
@@ -64,12 +71,17 @@ function GameArea() {
     //U SHOULD GET THE START AND END WIDTH OF THE GAME CONTAINER FOR BOUNDARIES LATER
     function handleKeyDown(e) {
       if (e.key === "ArrowLeft") {
-        setPetX((prevX) => Math.max(prevX - 10, 0));
+        setPetCoordinates((prevCoord) => ({
+          ...prevCoord,
+          x: Math.max(prevCoord.x - 10, 0),
+        }));
       } else if (e.key === "ArrowRight") {
-        setPetX((prevX) => Math.min(prevX + 10, gameAreaWidth));
+        setPetCoordinates((prevCoord) => ({
+          ...prevCoord,
+          x: Math.min(prevCoord.x + 10, gameAreaWidth),
+        }));
       }
     }
-    //UPDATE PET'S X Y HEIGHT AND WIDTH HERE
 
     document.addEventListener("keydown", handleKeyDown);
 
@@ -92,7 +104,7 @@ function GameArea() {
           />
         );
       })}
-      <Pet position={petX} ref={petRef} />
+      <Pet position={petCoordinates.x} ref={petRef} />
     </div>
   );
 }
