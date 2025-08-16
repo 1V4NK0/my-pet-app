@@ -276,6 +276,7 @@
 
 /* Game container styling */
 .game-area {
+  display: block;
   position: relative;
   width: 400px;
   height: 600px;
@@ -325,7 +326,7 @@
   border-radius: 0 0 12px 12px;
 }
 
-.pet {
+/* .pet {
   position: absolute;
   bottom: 10px;
   font-size: 40px;
@@ -343,10 +344,10 @@
   filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.4));
   transition: transform 0.2s ease;
   user-select: none;
-}
+} */
 
 /* Responsive font sizes */
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .game-area {
     width: 350px;
     height: 500px;
@@ -374,4 +375,4 @@
   .game-item {
     font-size: 25px;
   }
-}
+} */
