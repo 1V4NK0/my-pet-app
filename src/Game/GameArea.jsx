@@ -6,10 +6,13 @@ import { useEffect, useRef, useState } from "react";
 function GameArea({ onExit }) {
   // CHANGE LATER TO THE GAME CONTAINER WIDTH
   const [items, setItems] = useState([]);
+
   let visibleScreenWidth = window.innerWidth - 100;
   let lives = 3;
   let gameAreaRef = useRef(null);
   let petRef = useRef(null);
+  const itemsRef = useRef([]);
+  const animationRef = useRef(null);
   const [gameAreaWidth, setGameAreaWidth] = useState(0);
   const [petWidth, setPetWidth] = useState(30);
   //generate random eatable and pick random food out of arr?
@@ -31,28 +34,37 @@ function GameArea({ onExit }) {
         id: Date.now(),
         edible: isEdible,
         emoji: isEdible ? food[randomIndex] : trash[randomIndex],
-        x: Math.random() * (gameAreaRef.current.offsetWidth - petWidth - 15),
+        x: Math.random() * (gameAreaRef.current.offsetWidth - petWidth - 35),
         y: 30,
         width: 25,
         height: 25,
       };
 
       setItems((prev) => [...prev, item]);
+      itemsRef.current.push(item);
     }, 1700);
 
     return () => clearInterval(interval);
   }, []);
 
+
+
+  function animate() {
+    //1. update items positions
+    itemsRef.current.forEach((item) => {
+      item.y += 3;
+    });
+
+    //2. update items state (trigger re-render if needed)
+    setItems([...itemsRef.current]);
+
+    //3. schedule the next frame
+    animationRef.current = requestAnimationFrame(animate);
+  }
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setItems((prevArr) =>
-        prevArr.map((item) => ({ ...item, y: item.y + 4 }))
-      );
-
-      //UPDATE EACH ITEM X Y W & H here
-    }, 50);
-
-    return () => clearInterval(interval);
+    animationRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationRef.current);
   }, []);
 
   useEffect(() => {
@@ -63,7 +75,7 @@ function GameArea({ onExit }) {
 
   useEffect(() => {
     if (gameAreaRef.current) {
-      setGameAreaWidth(gameAreaRef.current.offsetWidth - petWidth - 15);
+      setGameAreaWidth(gameAreaRef.current.offsetWidth - petWidth - 35);
     }
   }, []);
 
@@ -73,12 +85,12 @@ function GameArea({ onExit }) {
       if (e.key === "ArrowLeft") {
         setPetCoordinates((prevCoord) => ({
           ...prevCoord,
-          x: Math.max(prevCoord.x - 10, 0),
+          x: Math.max(prevCoord.x - 5, 0),
         }));
       } else if (e.key === "ArrowRight") {
         setPetCoordinates((prevCoord) => ({
           ...prevCoord,
-          x: Math.min(prevCoord.x + 10, gameAreaWidth),
+          x: Math.min(prevCoord.x + 5, gameAreaWidth),
         }));
       }
     }
