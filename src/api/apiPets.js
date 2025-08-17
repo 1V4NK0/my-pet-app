@@ -36,6 +36,26 @@ export async function changeNameAPI(newName) {
   }
 }
 
+export async function dodep(amount) {
+  console.log("INSIDE DODEP apiPets, sending amount: " + amount);
+  const URL = "http://localhost:8080/pets/dodep";
+  try {
+    const response = await fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ amount: amount }),
+    });
+    if (!response.ok) throw new Error("http error" + response.status);
+    // console.log(await response.json());
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
 export async function playAPI() {
   const playURL = "http://localhost:8080/pets/play";
   try {

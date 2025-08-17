@@ -1,18 +1,60 @@
 import { useEffect, useRef, useState } from "react";
 
+/*
+TO DO:
+- make canvas responsive to the different sizes
+- implement the collision logic - DONE
+- the game logic (points, lives (decrease lives if item is edible and falls out of the canvas))
+- make game harder over progress (points > 20 => spawn items more frequently)
+
+
+useState for points and lives
+
+THE WAY THE CANVAS AND ANIMATIONS WORK:
+- define canvas as a container for the elements
+- define canvas context as a tool to draw on a canvas
+- declare and initialize useRef for items (array) and pet state management without re-rendering (not efficient for this case)
+- define animate() func to draw (and move food items) the elements and move them (items, pet)
+- use useEffect to generate and push new food items
+- use useEffect to handle key event listener to move your pet and update the position
+
+Common side effects (useEffect):
+ - data fetching (I use react query so it's not actually needed)
+ - timers and intervals, requestAnimationFrame
+ - eventListeners
+ - web socket connections
+ - DOM manipulations
+ - cleanup actions
+*/
+
 /* eslint-disable no-unused-vars */
-function GameArea({ onExit }) {
+function GameArea({
+  lives,
+  onExit,
+  onIncreaseLives,
+  onDecreaseLives,
+  onIncreaseScore,
+  points,
+}) {
+  //IDEAS
+  //handle the passing points to your money
+  //make items appear faster over time or points
+  //maybe add onExit to exit as soon as u lose or sort of end game screen
+  //when u click "play" -10 energy, +money as points, 
   let gameAreaRef = useRef(null);
-  let lives = 3;
+  //useState is async so it doesn't update in real time that's why they can't keep in track with animate(), use useRef for immediate updates
+
   const itemsRef = useRef([]);
   const animationRef = useRef(null);
   const [gameAreaWidth, setGameAreaWidth] = useState(0);
   const food = ["🍔", "🥗", "🍟", "🍕", "🍿", "🍪", "🍫", "🍉", "🍑", "🍇"];
   const trash = ["🐸", "⚡️", "💩", "🧠", "👑", "🍄", "🥊", "⚽️", "🚗", "🎸"];
-  const itemY = useRef(40);
+
   const petRef = useRef({ x: 180, y: 550, width: 30, height: 30 });
 
   useEffect(() => {
+    const time = points > 5 ? 1000 : 1500;
+
     const interval = setInterval(() => {
       const isEdible = Math.random() < 0.5;
       const randomIndex = Math.floor(Math.random() * 10);
@@ -26,20 +68,21 @@ function GameArea({ onExit }) {
         height: 25,
       };
 
-      // setItems((prev) => [...prev, item]);
       itemsRef.current.push(item);
-    }, 1700);
+    }, time);
 
     return () => clearInterval(interval);
-  }, [trash, food]);
+  }, [trash, food, points]);
 
   function animate() {
     //STEPS
     /*
-    1. clear the canvas for the new frames
-    2. update game state (move items y+=3)
-    3. draw everything with ctx (ctx.fillText)
-    4. request next frame (call requestAnimationFrame(animate) again)
+    1. get the canvas ref
+    2. define the context for drawing on a canvas
+    3. clear the canvas to refresh
+    4. update positions of element
+    5. draw items
+    6. call requestAnimationFrame(animate) for constant looping 
     */
 
     const canvas = gameAreaRef.current;
@@ -52,6 +95,27 @@ function GameArea({ onExit }) {
     itemsRef.current.forEach((item) => {
       item.y += 2;
       ctx.fillText(item.emoji, item.x, item.y);
+
+      if (
+        item.x < petRef.current.x + petRef.current.width &&
+        item.x + item.width > petRef.current.x &&
+        item.y < petRef.current.y + petRef.current.height &&
+        item.y + item.height > petRef.current.y
+      ) {
+        //Don't use pop() as it removes the last element, not the one collided and it basically removes all the items
+        // itemsRef.current.pop(item);
+        // console.log("collision! " + item.emoji);
+
+        itemsRef.current = itemsRef.current.filter(
+          (currItem) => currItem.id !== item.id
+        );
+
+        if (item.edible) {
+          onIncreaseScore();
+        } else {
+          onDecreaseLives();
+        }
+      }
     });
 
     itemsRef.current = itemsRef.current.filter(
@@ -59,7 +123,7 @@ function GameArea({ onExit }) {
     );
 
     ctx.fillText("🐱", petRef.current.x, petRef.current.y);
-    console.log(petRef.current);
+    // console.log(petRef.current);
 
     //4. schedule the next frame
     animationRef.current = requestAnimationFrame(animate);
