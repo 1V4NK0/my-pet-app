@@ -6,7 +6,7 @@ import { usePet } from "../hooks/usePet";
 import { useChangeName } from "../hooks/useChangeName";
 import BasicSelect from "./Select";
 
-function Pet({ frameIndex, frameCount = 10 }) {
+function Pet({ frameIndex }) {
   const style = {
     backgroundImage: "url(/Idle.png)",
     // Use pixel-based positioning with CSS calc for precise frame positioning
@@ -48,6 +48,21 @@ function PetContainer() {
   const [frameIndex, setFrameIndex] = useState(0);
   const frameCount = 10; // total frames in your sprite
   const { pet, error, isLoading } = usePet();
+  const [petStats, setStats] = useState({
+    hunger: 0,
+    energy: 0,
+    health: 0,
+  });
+
+  useEffect(() => {
+    if (pet) {
+      setStats({
+        hunger: pet.hunger,
+        energy: pet.energy,
+        health: pet.health,
+      });
+    }
+  }, [pet]);
 
   useEffect(() => {
     // Change frame every 150ms (~6-7 frames per second)
@@ -57,6 +72,26 @@ function PetContainer() {
 
     return () => clearInterval(interval);
   }, [frameCount]);
+
+  useEffect(() => {
+    const eventSource = new EventSource(
+      "http://localhost:8080/pets/sse/pet-stats"
+    );
+
+    eventSource.onmessage = (event) => {
+      const parsedDataToJSON = JSON.parse(event.data);
+      console.log(parsedDataToJSON);
+      setStats((prevState) => ({
+        ...prevState,
+        hunger: parsedDataToJSON.hunger,
+        energy: parsedDataToJSON.energy,
+      }));
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   if (isLoading) return <h2>Loading...</h2>;
   if (error) return <h2>Error: error.message</h2>;
@@ -69,7 +104,11 @@ function PetContainer() {
       </div>
       <NameTag name={name} />
       <Pet frameIndex={frameIndex} frameCount={frameCount} />
-      <Stats hunger={hunger} energy={energy} health={health} />
+      <Stats
+        hunger={petStats.hunger}
+        energy={petStats.energy}
+        health={petStats.health}
+      />
     </div>
   );
 }

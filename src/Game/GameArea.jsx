@@ -40,7 +40,7 @@ function GameArea({
   //handle the passing points to your money
   //make items appear faster over time or points
   //maybe add onExit to exit as soon as u lose or sort of end game screen
-  //when u click "play" -10 energy, +money as points, 
+  //when u click "play" -10 energy, +money as points,
   let gameAreaRef = useRef(null);
   //useState is async so it doesn't update in real time that's why they can't keep in track with animate(), use useRef for immediate updates
 

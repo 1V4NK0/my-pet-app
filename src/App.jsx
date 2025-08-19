@@ -12,7 +12,7 @@ function App() {
   const { pet, isLoading } = usePet();
 
   return (
-    <>
+    <div className="app-container">
       {isPlaying ? (
         <GameLayout onExit={() => setIsPlaying(false)} />
       ) : (
@@ -29,7 +29,7 @@ function App() {
           <Footer onPlay={() => setIsPlaying(true)} />
         </div>
       )}
-    </>
+    </div>
   );
 }
 export default App;
